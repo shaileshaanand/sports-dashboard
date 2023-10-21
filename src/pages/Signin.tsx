@@ -4,7 +4,6 @@ import {
   Button,
   Center,
   Flex,
-  Input,
   LoadingOverlay,
   Paper,
   PasswordInput,
@@ -17,74 +16,70 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 
-import { createUser } from "../api/api";
-import { CreateUserPayload } from "../types";
+import { signinUser } from "../api/api";
+import { SignInPayload } from "../types";
 
-const Signup = () => {
+const Signin = () => {
   const navigate = useNavigate();
 
-  const signUpForm = useForm({
+  const signInForm = useForm({
     initialValues: {
       email: "",
       password: "",
-      name: "",
     },
   });
+
   const setAuthToken = useLocalStorage({
     key: "auth_token",
     defaultValue: undefined,
   })[1];
 
-  const createUserMutation = useMutation(
-    (data: CreateUserPayload) => createUser(data),
+  const signInMutation = useMutation(
+    (data: SignInPayload) => signinUser(data),
     {
       onSuccess: (data) => {
-        if (data.auth_token) {
-          setAuthToken(data.auth_token);
-        }
+        setAuthToken(data?.auth_token);
         navigate("/");
       },
     }
   );
   return (
-    <Center p="md">
+    <Center>
       <Paper shadow="md" p={30}>
         <Center>
-          <Title order={2}>Sign Up</Title>
+          <Title order={2}>Sign in</Title>
         </Center>
         <form
-          onSubmit={signUpForm.onSubmit((values) => {
-            createUserMutation.mutate(values);
+          onSubmit={signInForm.onSubmit((values) => {
+            signInMutation.mutate(values);
           })}
         >
           <Box pos="relative">
-            <LoadingOverlay visible={createUserMutation.isLoading} />
+            <LoadingOverlay visible={signInMutation.isLoading} />
             <Flex direction="column" gap="md" miw={300}>
-              <TextInput
-                label="Name"
-                placeholder="Name"
-                {...signUpForm.getInputProps("name")}
-              />
-              <TextInput
-                label="Email"
-                placeholder="Email"
-                {...signUpForm.getInputProps("email")}
-              />
-              <Input.Wrapper label="Password">
-                <PasswordInput
-                  placeholder="Password"
-                  {...signUpForm.getInputProps("password")}
+              <Box>
+                <TextInput
+                  label="Email"
+                  placeholder="Email"
+                  {...signInForm.getInputProps("email")}
                 />
-              </Input.Wrapper>
+              </Box>
+              <Box>
+                <PasswordInput
+                  label="Password"
+                  placeholder="Password"
+                  {...signInForm.getInputProps("password")}
+                />
+              </Box>
               <Box>
                 <Button variant="filled" type="submit" fullWidth>
                   Submit
                 </Button>
                 <Center>
                   <Text size="sm" mt={8}>
-                    Already have an account?{"  "}
-                    <Anchor component={Link} to="/signin">
-                      Signin
+                    Don&apos;t have an account?{"  "}
+                    <Anchor component={Link} to="/signup">
+                      Signup
                     </Anchor>
                   </Text>
                 </Center>
@@ -97,4 +92,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signin;

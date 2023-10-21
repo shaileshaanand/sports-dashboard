@@ -1,3 +1,5 @@
+import { notifications } from "@mantine/notifications";
+
 const baseUrl = "https://wd301-capstone-api.pupilfirst.school";
 
 type Options = {
@@ -6,22 +8,38 @@ type Options = {
   body?: string;
 };
 
-const fireRequest = async (
-  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
-  path: string,
-  body?: Object,
-  bodyRequired: boolean = false,
-  pathParam?: Object,
-  params?: Object,
-  authenticationRequired: boolean = false
-) => {
+const showErrorNotification = (message: string) => {
+  notifications.show({
+    title: "Error",
+    message,
+    color: "red",
+  });
+};
+
+const fireRequest = async ({
+  method,
+  path,
+  body,
+  pathParam,
+  params,
+  authenticationRequired = true,
+}: {
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+  path: string;
+  body?: Object;
+  pathParam?: Object;
+  params?: Object;
+  authenticationRequired?: boolean;
+}) => {
   //headers
   let requestPath = path;
-  const authToken = JSON.parse(localStorage.getItem("auth_token") ?? "");
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  if (authenticationRequired)
+  if (authenticationRequired) {
+    const authToken = JSON.parse(localStorage.getItem("auth_token") ?? '""');
     headers.append("Authorization", `Bearer ${authToken}`);
+  }
 
   // fetch api options
   const options: Options = {
@@ -29,7 +47,7 @@ const fireRequest = async (
     headers,
   };
 
-  if (bodyRequired) options.body = JSON.stringify(body);
+  if (body) options.body = JSON.stringify(body);
 
   // modifying path according to params
   if (params) {
@@ -54,19 +72,20 @@ const fireRequest = async (
     })
     .then((res) => {
       if (res[0].status === 401) {
-        console.error("Unauthorized access denied");
+        showErrorNotification("Unauthorized access denied");
         localStorage.removeItem("access_token");
-      } else if (res[0].status === 405) console.error("Permission denied");
+      } else if (res[0].status === 405)
+        showErrorNotification("Permission denied");
       else if (res[0].status >= 400) {
         res[1].forEach((err: any) => {
           if (typeof err === "string")
-            console.error(
+            showErrorNotification(
               err.replace(/\w\S*/g, (w: any) =>
                 w.replace(/^\w/, (c: any) => c.toUpperCase())
               )
             );
           else
-            console.error(
+            showErrorNotification(
               err.replace(/\w\S*/g, (w: any) =>
                 w.replace(/^\w/, (c: any) => c.toUpperCase())
               )
@@ -76,7 +95,7 @@ const fireRequest = async (
 
       return res[1];
     })
-    .catch(() => console.error("Something went wrong"));
+    .catch(() => showErrorNotification("Something went wrong"));
   return response;
 };
 
