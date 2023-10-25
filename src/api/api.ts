@@ -17,3 +17,15 @@ export const signinUser = (body: SignInPayload) =>
     body,
     authenticationRequired: false,
   });
+
+export const getMatches = () =>
+  fireRequest({
+    method: "GET",
+    path: "/matches",
+  });
+
+export const getMatch = (id: number) =>
+  fireRequest({
+    method: "GET",
+    path: `/matches/${id}`,
+  });
