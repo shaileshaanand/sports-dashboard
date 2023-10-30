@@ -60,7 +60,7 @@ export type Article = {
   };
   date: string;
   summary: string;
-  teams: {
+  teams?: {
     id: number;
     name: string;
   }[];
@@ -90,3 +90,9 @@ export type ArticleDetail = {
     },
   ];
 };
+
+export type Teams = {
+  id: number;
+  name: string;
+  plays: string;
+}[];

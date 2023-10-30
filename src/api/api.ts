@@ -6,6 +6,7 @@ import {
   MatchList,
   SignInPayload,
   SportList,
+  Teams,
 } from "../types";
 
 import fireRequest from "./fireRequest";
@@ -61,3 +62,9 @@ export const getArticle = (id: number) =>
       id,
     },
   }) as Promise<ArticleDetail>;
+
+export const getTeams = () =>
+  fireRequest({
+    method: "GET",
+    path: "/teams",
+  }) as Promise<Teams>;
