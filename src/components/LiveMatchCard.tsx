@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Paper, Text } from "@mantine/core";
+import { ActionIcon, Flex, Paper, Space, Text } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import React from "react";
 import { useQuery } from "react-query";
@@ -22,6 +22,7 @@ const LiveMatchCard = ({ matchId }: { matchId: number }) => {
       <Text size="sm" c="dimmed">
         {data.name}
       </Text>
+      <Space h="xs" />
       <Flex justify="space-between">
         <Text fs="italic">{data.teams[0].name}</Text>
         <Text>{data.score[data.teams[0].name]}</Text>
