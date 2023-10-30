@@ -1,4 +1,12 @@
-import { CreateUserPayload, SignInPayload } from "../types";
+import {
+  ArticleDetail,
+  ArticleList,
+  CreateUserPayload,
+  Match,
+  MatchList,
+  SignInPayload,
+  SportList,
+} from "../types";
 
 import fireRequest from "./fireRequest";
 
@@ -22,10 +30,34 @@ export const getMatches = () =>
   fireRequest({
     method: "GET",
     path: "/matches",
-  });
+  }) as Promise<MatchList>;
 
 export const getMatch = (id: number) =>
   fireRequest({
     method: "GET",
-    path: `/matches/${id}`,
-  });
+    path: "/matches/:id",
+    params: {
+      id,
+    },
+  }) as Promise<Match>;
+
+export const getSports = () =>
+  fireRequest({
+    method: "GET",
+    path: "/sports",
+  }) as Promise<SportList>;
+
+export const getArticles = () =>
+  fireRequest({
+    method: "GET",
+    path: "/articles",
+  }) as Promise<ArticleList>;
+
+export const getArticle = (id: number) =>
+  fireRequest({
+    method: "GET",
+    path: "/articles/:id",
+    params: {
+      id,
+    },
+  }) as Promise<ArticleDetail>;
