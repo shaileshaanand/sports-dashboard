@@ -22,14 +22,7 @@ const NewsArticle = ({
   article: Article;
   showShport: boolean;
 }) => (
-  <Paper
-    withBorder
-    radius="md"
-    shadow="sm"
-    style={{
-      overflow: "hidden",
-    }}
-  >
+  <Paper withBorder radius="md" shadow="sm">
     <Flex>
       <Box h={200} w={200}>
         <Image
