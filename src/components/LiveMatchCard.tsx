@@ -12,7 +12,7 @@ const LiveMatchCard = ({ matchId }: { matchId: number }) => {
   );
 
   return data ? (
-    <Paper shadow="md" p={20} radius="md" withBorder maw={250}>
+    <Paper shadow="md" p="md" radius="md" withBorder maw={250}>
       <Flex align="center" justify="space-between">
         <Text fw="bold">{data.sportName}</Text>
         <ActionIcon onClick={() => refetch()}>

@@ -47,7 +47,7 @@ const NewsArticle = ({
               </Text>
               {showShport && <Badge size="sm">{article.sport.name}</Badge>}
             </Flex>
-            <Text mt="xs" c="dimmed" size="sm">
+            <Text mt="xs" c="dimmed">
               {article.summary}
             </Text>
           </Box>
