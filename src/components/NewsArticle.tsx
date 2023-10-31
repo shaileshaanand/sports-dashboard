@@ -25,6 +25,7 @@ const NewsArticle = ({
   <Paper
     withBorder
     radius="md"
+    shadow="sm"
     style={{
       overflow: "hidden",
     }}
