@@ -79,16 +79,10 @@ export type ArticleDetail = {
   };
   date: string;
   content: string;
-  teams: [
-    {
-      id: number;
-      name: string;
-    },
-    {
-      id: number;
-      name: string;
-    },
-  ];
+  teams: {
+    id: number;
+    name: string;
+  }[];
 };
 
 export type Teams = {

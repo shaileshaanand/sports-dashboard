@@ -1,7 +1,19 @@
-import { Badge, Box, Button, Flex, Image, Paper, Text } from "@mantine/core";
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Group,
+  Image,
+  Paper,
+  Pill,
+  Text,
+} from "@mantine/core";
 import { Link } from "react-router-dom";
 
 import { Article } from "../types";
+
+import Time from "./Time";
 
 const NewsArticle = ({
   article,
@@ -52,10 +64,16 @@ const NewsArticle = ({
             </Text>
           </Box>
           <Box pb="md">
-            <Flex justify="end">
+            <Group mb="xs">
+              {article.teams.map((team) => (
+                <Pill key={team.id}>{team.name}</Pill>
+              ))}
+            </Group>
+            <Flex justify="space-between" align="end">
+              {article?.date && <Time date={article.date} />}
               <Button
                 component={Link}
-                to={`/article/${article.sport.id}`}
+                to={`/article/${article.id}`}
                 variant="outline"
               >
                 Read More

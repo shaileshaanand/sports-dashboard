@@ -13,7 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import LiveMatchCard from "../components/LiveMatchCard";
 import NewsArticleList from "../components/NewsArticleList";
@@ -163,6 +163,7 @@ export function HomePage() {
       <Anchor component={Link} to="/signout">
         Logout
       </Anchor>
+      <Outlet />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -11,10 +12,12 @@ import "@mantine/notifications/styles.css";
 export default function App() {
   return (
     <MantineProvider theme={theme}>
-      <QueryClientProvider client={new QueryClient()}>
-        <Notifications position="top-right" />
-        <Router />
-      </QueryClientProvider>
+      <ModalsProvider>
+        <QueryClientProvider client={new QueryClient()}>
+          <Notifications position="top-right" />
+          <Router />
+        </QueryClientProvider>
+      </ModalsProvider>
     </MantineProvider>
   );
 }
