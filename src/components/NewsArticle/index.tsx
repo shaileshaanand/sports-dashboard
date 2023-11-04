@@ -5,15 +5,15 @@ import {
   Flex,
   Group,
   Image,
-  Paper,
   Pill,
   Text,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 
-import { Article } from "../types";
+import { Article } from "../../types";
+import Time from "../Time";
 
-import Time from "./Time";
+import NewsArticlePaper from "./NewsArticlePaper";
 
 const NewsArticle = ({
   article,
@@ -22,7 +22,7 @@ const NewsArticle = ({
   article: Article;
   showShport: boolean;
 }) => (
-  <Paper withBorder radius="md" shadow="sm">
+  <NewsArticlePaper>
     <Flex>
       <Box h={200} w={200}>
         <Image
@@ -77,7 +77,7 @@ const NewsArticle = ({
         </Flex>
       </Box>
     </Flex>
-  </Paper>
+  </NewsArticlePaper>
 );
 
 export default NewsArticle;

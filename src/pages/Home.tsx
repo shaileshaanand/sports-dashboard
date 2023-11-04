@@ -73,42 +73,32 @@ export function HomePage() {
         Trending News
       </Title>
       <Grid>
-        {sportsList && (
-          <Grid.Col span={9}>
-            <Box component="section">
-              <Tabs variant="outline" defaultValue="yournews">
-                <Tabs.List>
-                  <Tabs.Tab value="yournews">Your News</Tabs.Tab>
-                  {sportsList?.sports.map((sport: any) => (
-                    <Tabs.Tab key={sport.id} value={sport.id.toString()}>
-                      {sport.name}
-                    </Tabs.Tab>
-                  ))}
-                </Tabs.List>
-                <Tabs.Panel value="yournews">
-                  {articleList ? (
-                    <NewsArticleList articleList={articleList} showSport />
-                  ) : (
-                    <Text>Loading...</Text>
-                  )}
-                </Tabs.Panel>
-                {sportsList?.sports.map((sport) => (
-                  <Tabs.Panel key={sport.id} value={sport.id.toString()}>
-                    {articleList ? (
-                      <NewsArticleList
-                        articleList={articleList.filter(
-                          (article) => article.sport.id === sport.id
-                        )}
-                      />
-                    ) : (
-                      <Text>Loading...</Text>
-                    )}
-                  </Tabs.Panel>
+        <Grid.Col span={9}>
+          <Box component="section">
+            <Tabs variant="outline" defaultValue="yournews">
+              <Tabs.List>
+                <Tabs.Tab value="yournews">Your News</Tabs.Tab>
+                {sportsList?.sports.map((sport: any) => (
+                  <Tabs.Tab key={sport.id} value={sport.id.toString()}>
+                    {sport.name}
+                  </Tabs.Tab>
                 ))}
-              </Tabs>
-            </Box>
-          </Grid.Col>
-        )}
+              </Tabs.List>
+              <Tabs.Panel value="yournews">
+                <NewsArticleList articleList={articleList} showSport />
+              </Tabs.Panel>
+              {sportsList?.sports.map((sport) => (
+                <Tabs.Panel key={sport.id} value={sport.id.toString()}>
+                  <NewsArticleList
+                    articleList={articleList?.filter(
+                      (article) => article.sport.id === sport.id
+                    )}
+                  />
+                </Tabs.Panel>
+              ))}
+            </Tabs>
+          </Box>
+        </Grid.Col>
         {articleList && sportsList && teamsList && (
           <Grid.Col span={3}>
             <Box component="aside" p="md" bg="blue.1">
@@ -136,35 +126,34 @@ export function HomePage() {
                   }}
                 />
               </Stack>
-              {articleList && (
-                <Box py="sm">
-                  <Stack gap="sm">
-                    {articleList
-                      .filter((article) =>
-                        selectedTeam && article.teams
-                          ? article.teams
-                              .map((team) => team.name)
-                              .includes(selectedTeam)
-                          : false
-                      )
-                      .map((article) => (
-                        <Paper key={article.id} withBorder p="xs">
-                          <Stack>
-                            <Text fw={700}>{article.title}</Text>
-                            <Text>{article.summary}</Text>
-                            <Button
-                              fullWidth
-                              component={Link}
-                              to={`/article/${article.id}`}
-                            >
-                              Read more
-                            </Button>
-                          </Stack>
-                        </Paper>
-                      ))}
-                  </Stack>
-                </Box>
-              )}
+
+              <Box py="sm">
+                <Stack gap="sm">
+                  {articleList
+                    .filter((article) =>
+                      selectedTeam && article.teams
+                        ? article.teams
+                            .map((team) => team.name)
+                            .includes(selectedTeam)
+                        : false
+                    )
+                    .map((article) => (
+                      <Paper key={article.id} withBorder p="xs">
+                        <Stack>
+                          <Text fw={700}>{article.title}</Text>
+                          <Text>{article.summary}</Text>
+                          <Button
+                            fullWidth
+                            component={Link}
+                            to={`/article/${article.id}`}
+                          >
+                            Read more
+                          </Button>
+                        </Stack>
+                      </Paper>
+                    ))}
+                </Stack>
+              </Box>
             </Box>
           </Grid.Col>
         )}
