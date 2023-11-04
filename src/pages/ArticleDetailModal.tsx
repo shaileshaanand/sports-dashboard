@@ -11,7 +11,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { getArticle } from "../api/api";
@@ -35,18 +35,16 @@ const ArticleDetailModal = () => {
 
   const theme = useMantineTheme();
 
-  const { data } = useQuery<ArticleDetail>(
-    ["article", articleId],
-    () => getArticle(articleId),
-    {
-      placeholderData: () =>
-        articleToArticleDetail(
-          queryClient
-            .getQueryData<ArticleList>("articles")
-            ?.find((article) => article.id === articleId)
-        ),
-    }
-  );
+  const { data } = useQuery({
+    queryKey: ["article", articleId],
+    queryFn: () => getArticle(articleId),
+    placeholderData: () =>
+      articleToArticleDetail(
+        queryClient
+          .getQueryData<ArticleList>(["articles"])
+          ?.find((article) => article.id === articleId)
+      ),
+  });
 
   return (
     <Modal

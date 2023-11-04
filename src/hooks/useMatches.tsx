@@ -1,7 +1,11 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { getMatches } from "../api/api";
 
-const useMatches = () => useQuery("matches", () => getMatches());
+const useMatches = () =>
+  useQuery({
+    queryKey: ["matches"],
+    queryFn: () => getMatches(),
+  });
 
 export default useMatches;

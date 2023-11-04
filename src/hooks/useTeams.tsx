@@ -1,7 +1,11 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { getTeams } from "../api/api";
 
-const useTeams = () => useQuery("teams", () => getTeams());
+const useTeams = () =>
+  useQuery({
+    queryKey: ["teams"],
+    queryFn: () => getTeams(),
+  });
 
 export default useTeams;

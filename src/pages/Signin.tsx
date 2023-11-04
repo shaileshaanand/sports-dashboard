@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useLocalStorage } from "@mantine/hooks";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 
 import { signinUser } from "../api/api";
@@ -34,15 +34,14 @@ const Signin = () => {
     defaultValue: undefined,
   })[1];
 
-  const signInMutation = useMutation(
-    (data: SignInPayload) => signinUser(data),
-    {
-      onSuccess: (data) => {
-        setAuthToken(data?.auth_token);
-        navigate("/");
-      },
-    }
-  );
+  const signInMutation = useMutation({
+    mutationFn: (data: SignInPayload) => signinUser(data),
+    onSuccess: (data) => {
+      setAuthToken(data?.auth_token);
+      navigate("/");
+    },
+  });
+
   return (
     <Center>
       <Paper shadow="md" p={30}>
@@ -55,7 +54,7 @@ const Signin = () => {
           })}
         >
           <Box pos="relative">
-            <LoadingOverlay visible={signInMutation.isLoading} />
+            <LoadingOverlay visible={signInMutation.isPending} />
             <Flex direction="column" gap="md" miw={300}>
               <Box>
                 <TextInput

@@ -1,7 +1,11 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { getSports } from "../api/api";
 
-const useSports = () => useQuery("sports", () => getSports());
+const useSports = () =>
+  useQuery({
+    queryKey: ["sports"],
+    queryFn: () => getSports(),
+  });
 
 export default useSports;

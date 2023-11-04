@@ -1,7 +1,7 @@
 import { ActionIcon, Box, Flex, Stack, Text } from "@mantine/core";
 import { IconClock, IconRefresh } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
-import { useQuery } from "react-query";
 
 import { getMatch } from "../../api/api";
 import classes from "../../styles.module.css";
@@ -16,9 +16,10 @@ const LiveMatchCard = ({
   matchId: number;
   loading?: boolean;
 }) => {
-  const { data, refetch, isFetching } = useQuery(["liveMatch", matchId], () =>
-    getMatch(matchId)
-  );
+  const { data, refetch, isFetching } = useQuery({
+    queryKey: ["liveMatch", matchId],
+    queryFn: () => getMatch(matchId),
+  });
 
   return (
     <LiveMatchCardPaper>
