@@ -1,21 +1,13 @@
-import {
-  ActionIcon,
-  Box,
-  Flex,
-  Paper,
-  Skeleton,
-  Space,
-  Stack,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { ActionIcon, Box, Flex, Stack, Text } from "@mantine/core";
 import { IconClock, IconRefresh } from "@tabler/icons-react";
 import { formatDistanceToNow } from "date-fns";
-import React from "react";
 import { useQuery } from "react-query";
 
-import { getMatch } from "../api/api";
-import classes from "../styles.module.css";
+import { getMatch } from "../../api/api";
+import classes from "../../styles.module.css";
+
+import LiveMatchCardPaper from "./LiveMatchCardPaper";
+import LiveMatchCardSkeletonBase from "./LiveMatchCardSkeleton/LiveMatchCardSkeletonBase";
 
 const LiveMatchCard = ({
   matchId,
@@ -28,10 +20,8 @@ const LiveMatchCard = ({
     getMatch(matchId)
   );
 
-  const theme = useMantineTheme();
-
   return (
-    <Paper shadow="md" px="md" py="xs" radius="md" withBorder w={250}>
+    <LiveMatchCardPaper>
       {data && !loading ? (
         <Stack gap="xs">
           <Flex align="center" justify="space-between">
@@ -65,17 +55,9 @@ const LiveMatchCard = ({
           </Flex>
         </Stack>
       ) : (
-        <Stack gap="xs">
-          <Skeleton h={30} animate />
-          <Skeleton h={theme.fontSizes.sm} animate />
-          <Skeleton h={theme.fontSizes.sm} animate />
-          <Skeleton h={theme.fontSizes.md} animate />
-          <Skeleton h={theme.fontSizes.md} animate />
-          <Space h={8.5} />
-          <Skeleton h={theme.fontSizes.sm} animate />
-        </Stack>
+        <LiveMatchCardSkeletonBase />
       )}
-    </Paper>
+    </LiveMatchCardPaper>
   );
 };
 

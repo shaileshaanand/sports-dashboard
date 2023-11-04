@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 import LiveMatchCard from "../components/LiveMatchCard";
+import LiveMatchCardSkeleton from "../components/LiveMatchCard/LiveMatchCardSkeleton";
 import NewsArticleList from "../components/NewsArticleList";
 import useArticles from "../hooks/useArticles";
 import useMatches from "../hooks/useMatches";
@@ -52,12 +53,18 @@ export function HomePage() {
       <Box component="section">
         <Title order={2}>Live Matches</Title>
         <Group gap={10}>
-          {matchList?.matches &&
+          {matchList?.matches ? (
             matchList.matches
               .filter((match) => match.isRunning)
               .map((match) => (
                 <LiveMatchCard matchId={match.id} key={match.id} />
-              ))}
+              ))
+          ) : (
+            <>
+              <LiveMatchCardSkeleton />
+              <LiveMatchCardSkeleton />
+            </>
+          )}
         </Group>
       </Box>
       <Title order={2} pb={10}>
