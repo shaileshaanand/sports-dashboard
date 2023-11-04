@@ -38,12 +38,26 @@ const LiveMatchCard = ({
           </Text>
           <Box>
             <Flex justify="space-between">
-              <Text fs="italic">{data.teams[0].name}</Text>
-              <Text>{data.score[data.teams[0].name]}</Text>
+              <Text
+                fs="italic"
+                fw={data.playingTeam === data.teams[0].id ? 700 : 400}
+              >
+                {data.teams[0].name}
+              </Text>
+              <Text fw={data.playingTeam === data.teams[0].id ? 700 : 400}>
+                {data.score[data.teams[0].name]}
+              </Text>
             </Flex>
             <Flex justify="space-between">
-              <Text fs="italic">{data.teams[1].name}</Text>
-              <Text>{data.score[data.teams[1].name]}</Text>
+              <Text
+                fs="italic"
+                fw={data.playingTeam === data.teams[1].id ? 700 : 400}
+              >
+                {data.teams[1].name}
+              </Text>
+              <Text fw={data.playingTeam === data.teams[1].id ? 700 : 400}>
+                {data.score[data.teams[1].name]}
+              </Text>
             </Flex>
           </Box>
           <Flex gap={4}>
