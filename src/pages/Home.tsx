@@ -49,9 +49,10 @@ export function HomePage() {
 
   return (
     <>
-      <h1>Sports Dashboard</h1>
-      <Box component="section">
-        <Title order={2}>Live Matches</Title>
+      <Box component="section" pb="md">
+        <Title order={2} mb="sm">
+          Live Matches
+        </Title>
         <Group gap={10}>
           {matchList?.matches ? (
             matchList.matches

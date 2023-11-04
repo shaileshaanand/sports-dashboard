@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import ArticleDetailModal from "./pages/ArticleDetailModal";
 import { HomePage } from "./pages/Home";
+import Layout from "./pages/Layout";
 import Signin from "./pages/Signin";
 import Signout from "./pages/Signout";
 import Signup from "./pages/Signup";
@@ -9,11 +10,17 @@ import Signup from "./pages/Signup";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <Layout />,
     children: [
       {
-        path: "article/:articleId",
-        element: <ArticleDetailModal />,
+        path: "",
+        element: <HomePage />,
+        children: [
+          {
+            path: "article/:articleId",
+            element: <ArticleDetailModal />,
+          },
+        ],
       },
     ],
   },
