@@ -63,6 +63,8 @@ export function HomePage() {
             <>
               <LiveMatchCardSkeleton />
               <LiveMatchCardSkeleton />
+              <LiveMatchCardSkeleton />
+              <LiveMatchCardSkeleton />
             </>
           )}
         </Group>
