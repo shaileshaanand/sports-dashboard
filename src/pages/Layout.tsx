@@ -1,6 +1,5 @@
 import { Anchor, AppShell, Burger, Group, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React from "react";
 import { Link, Outlet } from "react-router-dom";
 
 const Layout = () => {
@@ -25,7 +24,7 @@ const Layout = () => {
               <Anchor component={Link} to="/settings">
                 Settings
               </Anchor>
-              <Anchor component={Link} to="/logout">
+              <Anchor component={Link} to="/signout">
                 Logout
               </Anchor>
             </Group>
@@ -36,7 +35,7 @@ const Layout = () => {
         <Anchor component={Link} to="/settings">
           Settings
         </Anchor>
-        <Anchor component={Link} to="/logout">
+        <Anchor component={Link} to="/signout">
           Logout
         </Anchor>
       </AppShell.Navbar>
