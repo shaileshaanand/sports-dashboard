@@ -37,7 +37,11 @@ const fireRequest = async ({
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   if (authenticationRequired) {
-    const authToken = JSON.parse(localStorage.getItem("auth_token") ?? '""');
+    const authToken =
+      localStorage.getItem("auth_token") !== "undefined"
+        ? JSON.parse(localStorage.getItem("auth_token") ?? "")
+        : "";
+
     headers.append("Authorization", `Bearer ${authToken}`);
   }
 
