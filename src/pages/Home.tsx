@@ -57,6 +57,11 @@ export function HomePage() {
           {matchList?.matches ? (
             matchList.matches
               .filter((match) => match.isRunning)
+              .sort(
+                (a, b) =>
+                  new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime()
+              )
+              .slice(0, 4) // only show last 5 matches
               .map((match) => (
                 <LiveMatchCard matchId={match.id} key={match.id} />
               ))
