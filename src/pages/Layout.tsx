@@ -33,9 +33,14 @@ const Layout = () => {
                 </Anchor>
               </Group>
             ) : (
-              <Anchor component={Link} to="/signin">
-                Login
-              </Anchor>
+              <Group ml="xl" visibleFrom="sm">
+                <Anchor component={Link} to="/signin">
+                  Login
+                </Anchor>
+                <Anchor component={Link} to="/signup">
+                  Signup
+                </Anchor>
+              </Group>
             )}
           </Group>
         </Group>
