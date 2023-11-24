@@ -12,11 +12,11 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useLocalStorage } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 
 import { signinUser } from "../api/api";
+import { useAppStore } from "../state/store";
 import { SignInPayload } from "../types";
 
 const Signin = () => {
@@ -29,10 +29,7 @@ const Signin = () => {
     },
   });
 
-  const setAuthToken = useLocalStorage({
-    key: "auth_token",
-    defaultValue: undefined,
-  })[1];
+  const setAuthToken = useAppStore((state) => state.setAuthToken);
 
   const signInMutation = useMutation({
     mutationFn: (data: SignInPayload) => signinUser(data),

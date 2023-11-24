@@ -1,5 +1,7 @@
 import { notifications } from "@mantine/notifications";
 
+import { useAppStore } from "../state/store";
+
 const baseUrl = "https://wd301-capstone-api.pupilfirst.school";
 
 type Options = {
@@ -37,11 +39,7 @@ const fireRequest = async ({
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   if (authenticationRequired) {
-    const authToken =
-      localStorage.getItem("auth_token") !== "undefined"
-        ? JSON.parse(localStorage.getItem("auth_token") ?? "")
-        : "";
-
+    const { authToken } = useAppStore.getState();
     headers.append("Authorization", `Bearer ${authToken}`);
   }
 

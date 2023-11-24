@@ -1,13 +1,11 @@
-import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
+import { useAppStore } from "../state/store";
+
 const Signout = () => {
   const [loggedOut, setLoggedOut] = useState(false);
-  const setAuthToken = useLocalStorage({
-    key: "auth_token",
-    defaultValue: undefined,
-  })[1];
+  const setAuthToken = useAppStore((state) => state.setAuthToken);
   useEffect(() => {
     setAuthToken(undefined);
     setLoggedOut(true);

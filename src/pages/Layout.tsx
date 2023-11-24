@@ -2,8 +2,11 @@ import { Anchor, AppShell, Burger, Group, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Link, Outlet } from "react-router-dom";
 
+import { useAppStore } from "../state/store";
+
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
+  const isLoggedIn = !!useAppStore((state) => state.authToken);
 
   return (
     <AppShell
@@ -20,14 +23,20 @@ const Layout = () => {
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" style={{ flex: 1 }}>
             <Title>Sports Dashboard</Title>
-            <Group ml="xl" visibleFrom="sm">
-              <Anchor component={Link} to="/settings">
-                Settings
+            {isLoggedIn ? (
+              <Group ml="xl" visibleFrom="sm">
+                <Anchor component={Link} to="/settings">
+                  Settings
+                </Anchor>
+                <Anchor component={Link} to="/signout">
+                  Logout
+                </Anchor>
+              </Group>
+            ) : (
+              <Anchor component={Link} to="/signin">
+                Login
               </Anchor>
-              <Anchor component={Link} to="/signout">
-                Logout
-              </Anchor>
-            </Group>
+            )}
           </Group>
         </Group>
       </AppShell.Header>
