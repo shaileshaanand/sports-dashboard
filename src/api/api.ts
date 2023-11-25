@@ -7,6 +7,7 @@ import {
   SignInPayload,
   SportList,
   Teams,
+  UserPreferences,
 } from "../types";
 
 import fireRequest from "./fireRequest";
@@ -68,3 +69,18 @@ export const getTeams = () =>
     method: "GET",
     path: "/teams",
   }) as Promise<Teams>;
+
+export const getUserPreferences = () =>
+  fireRequest({
+    method: "GET",
+    path: "/user/preferences",
+    authenticationRequired: true,
+  }) as Promise<UserPreferences>;
+
+export const updateUserPreferences = (body: UserPreferences) =>
+  fireRequest({
+    method: "PATCH",
+    path: "/user/preferences",
+    body,
+    authenticationRequired: true,
+  });

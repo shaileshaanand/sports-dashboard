@@ -90,3 +90,10 @@ export type Teams = {
   name: string;
   plays: string;
 }[];
+
+export type UserPreferences = {
+  preferences: {
+    favoriteSports: number[];
+    favoriteTeams: number[];
+  };
+};
