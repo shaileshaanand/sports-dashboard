@@ -13,15 +13,22 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useLocalStorage } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 
 import { createUser } from "../api/api";
+import useSports from "../hooks/useSports";
+import useTeams from "../hooks/useTeams";
+import useUpdatePreferencesMutation from "../hooks/useUpdatePreferencesMutation";
+import { useAppStore } from "../state/store";
 import { CreateUserPayload } from "../types";
 
 const Signup = () => {
   const navigate = useNavigate();
+
+  const updatePreferencesMutation = useUpdatePreferencesMutation();
+  const { data: sportsList, isLoading: isSportsListLoading } = useSports();
+  const { data: teamsList, isLoading: isTeamsListLoading } = useTeams();
 
   const signUpForm = useForm({
     initialValues: {
@@ -30,20 +37,25 @@ const Signup = () => {
       name: "",
     },
   });
-  const setAuthToken = useLocalStorage({
-    key: "auth_token",
-    defaultValue: undefined,
-  })[1];
+
+  const setAuthToken = useAppStore((state) => state.setAuthToken);
 
   const createUserMutation = useMutation({
     mutationFn: (data: CreateUserPayload) => createUser(data),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.auth_token) {
         setAuthToken(data.auth_token);
+        await updatePreferencesMutation.mutateAsync({
+          preferences: {
+            favoriteSports: sportsList?.sports.map((sport) => sport.id) ?? [],
+            favoriteTeams: teamsList?.map((team) => team.id) ?? [],
+          },
+        });
+        navigate("/");
       }
-      navigate("/");
     },
   });
+
   return (
     <Center p="md">
       <Paper shadow="md" p={30}>
@@ -56,7 +68,13 @@ const Signup = () => {
           })}
         >
           <Box pos="relative">
-            <LoadingOverlay visible={createUserMutation.isPending} />
+            <LoadingOverlay
+              visible={
+                createUserMutation.isPending ||
+                isSportsListLoading ||
+                isTeamsListLoading
+              }
+            />
             <Flex direction="column" gap="md" miw={300}>
               <TextInput
                 label="Name"

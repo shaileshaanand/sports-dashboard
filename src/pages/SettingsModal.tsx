@@ -10,13 +10,12 @@ import {
   useCombobox,
   useMantineTheme,
 } from "@mantine/core";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { updateUserPreferences } from "../api/api";
 import useSports from "../hooks/useSports";
 import useTeams from "../hooks/useTeams";
+import useUpdatePreferencesMutation from "../hooks/useUpdatePreferencesMutation";
 import useUserPrefrences from "../hooks/useUserPrefrences";
 import { UserPreferences } from "../types";
 
@@ -89,7 +88,6 @@ const preferencesReducer = (
 const SettingsModal = () => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  const queryCLient = useQueryClient();
 
   const { data: sportsList } = useSports();
   const { data: teamsList } = useTeams();
@@ -117,13 +115,7 @@ const SettingsModal = () => {
     }
   }, [prefrencesData]);
 
-  const updatePreferencesMutation = useMutation({
-    mutationFn: (data: UserPreferences) => updateUserPreferences(data),
-    onSuccess: () => {
-      queryCLient.invalidateQueries({ queryKey: ["userPrefrences"] });
-      navigate(-1);
-    },
-  });
+  const updatePreferencesMutation = useUpdatePreferencesMutation();
 
   return (
     <Modal

@@ -22,6 +22,8 @@ import useArticles from "../hooks/useArticles";
 import useMatches from "../hooks/useMatches";
 import useSports from "../hooks/useSports";
 import useTeams from "../hooks/useTeams";
+import useUserPrefrences from "../hooks/useUserPrefrences";
+import { useAppStore } from "../state/store";
 
 export function HomePage() {
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
@@ -32,6 +34,11 @@ export function HomePage() {
   const { data: sportsList } = useSports();
   const { data: articleList } = useArticles();
   const { data: teamsList } = useTeams();
+
+  const isLoggeedIn = !!useAppStore((state) => state.authToken);
+  const { data: userPreferences } = useUserPrefrences({
+    enabled: isLoggeedIn,
+  });
 
   const currentSportTeams = teamsList?.filter(
     (team) => team.plays === selectedSport
@@ -54,9 +61,18 @@ export function HomePage() {
           Live Matches
         </Title>
         <Group gap={10}>
-          {matchList?.matches ? (
+          {matchList?.matches && (isLoggeedIn ? userPreferences : true) ? (
             matchList.matches
-              .filter((match) => match.isRunning)
+              .filter(
+                (match) =>
+                  match.isRunning &&
+                  (isLoggeedIn
+                    ? userPreferences?.preferences.favoriteTeams.some(
+                        (teamId) =>
+                          match.teams.map((t) => t.id).includes(teamId)
+                      )
+                    : true)
+              )
               .sort(
                 (a, b) =>
                   new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime()
@@ -81,18 +97,32 @@ export function HomePage() {
       <Grid>
         <Grid.Col span={9}>
           <Box component="section">
-            <Tabs variant="outline" defaultValue="yournews">
+            <Tabs
+              variant="outline"
+              defaultValue={
+                isLoggeedIn ? "yournews" : sportsList?.sports[0].id.toString()
+              }
+            >
               <Tabs.List>
-                <Tabs.Tab value="yournews">Your News</Tabs.Tab>
+                {isLoggeedIn && <Tabs.Tab value="yournews">Your News</Tabs.Tab>}
                 {sportsList?.sports.map((sport: any) => (
                   <Tabs.Tab key={sport.id} value={sport.id.toString()}>
                     {sport.name}
                   </Tabs.Tab>
                 ))}
               </Tabs.List>
-              <Tabs.Panel value="yournews">
-                <NewsArticleList articleList={articleList} showSport />
-              </Tabs.Panel>
+              {isLoggeedIn && articleList && userPreferences && (
+                <Tabs.Panel value="yournews">
+                  <NewsArticleList
+                    articleList={articleList.filter((article) =>
+                      userPreferences.preferences.favoriteTeams.some((team) =>
+                        article.teams.map((t) => t.id).includes(team)
+                      )
+                    )}
+                    showSport
+                  />
+                </Tabs.Panel>
+              )}
               {sportsList?.sports.map((sport) => (
                 <Tabs.Panel key={sport.id} value={sport.id.toString()}>
                   <NewsArticleList

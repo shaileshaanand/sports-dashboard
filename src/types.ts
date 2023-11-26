@@ -42,12 +42,13 @@ export type Match = {
   playingTeam: number;
   story: string;
 };
+export type Sport = {
+  id: number;
+  name: string;
+};
 
 export type SportList = {
-  sports: {
-    id: number;
-    name: string;
-  }[];
+  sports: Sport[];
 };
 
 export type Article = {
@@ -85,11 +86,13 @@ export type ArticleDetail = {
   }[];
 };
 
-export type Teams = {
+export type Team = {
   id: number;
   name: string;
   plays: string;
-}[];
+};
+
+export type Teams = Team[];
 
 export type UserPreferences = {
   preferences: {
