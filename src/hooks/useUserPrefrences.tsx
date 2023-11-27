@@ -4,7 +4,7 @@ import { getUserPreferences } from "../api/api";
 import { UserPreferences } from "../types";
 
 const useUserPrefrences = (
-  options: Omit<
+  options?: Omit<
     UndefinedInitialDataOptions<
       UserPreferences,
       Error,
