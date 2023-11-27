@@ -24,6 +24,7 @@ import useSports from "../hooks/useSports";
 import useTeams from "../hooks/useTeams";
 import useUserPrefrences from "../hooks/useUserPrefrences";
 import { useAppStore } from "../state/store";
+import { Sport, Team } from "../types";
 
 export function HomePage() {
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
@@ -46,10 +47,30 @@ export function HomePage() {
 
   useEffect(() => {
     if (sportsList && teamsList) {
-      setSelectedSport(sportsList.sports[0].name);
+      setSelectedSport(
+        isLoggeedIn
+          ? (
+              sportsList.sports.find(
+                (sport) =>
+                  userPreferences?.preferences.favoriteSports[0] === sport.id
+              ) as Sport
+            ).name
+          : sportsList.sports[0].name
+      );
       setSelectedTeam(
-        teamsList.filter((team) => team.plays === sportsList.sports[0].name)[0]
-          ?.name ?? null
+        teamsList.filter(
+          (team) =>
+            team.plays ===
+            (isLoggeedIn
+              ? (
+                  sportsList.sports.find(
+                    (sport) =>
+                      userPreferences?.preferences.favoriteSports[0] ===
+                      sport.id
+                  ) as Sport
+                ).name
+              : sportsList.sports[0].name)
+        )[0]?.name ?? null
       );
     }
   }, [teamsList, sportsList]);
@@ -145,7 +166,18 @@ export function HomePage() {
                 <Select
                   placeholder="Select a sport"
                   searchable
-                  data={sportsList.sports.map((sport) => sport.name)}
+                  data={
+                    isLoggeedIn
+                      ? userPreferences?.preferences.favoriteSports
+                          .map(
+                            (sportId) =>
+                              sportsList?.sports.find(
+                                (sport) => sport.id === sportId
+                              )
+                          )
+                          .map((sport) => (sport as Sport).name)
+                      : sportsList.sports.map((sport) => sport.name)
+                  }
                   value={selectedSport}
                   onChange={(value) => {
                     setSelectedTeam(null);
@@ -155,7 +187,21 @@ export function HomePage() {
                 <Select
                   placeholder="Select a team"
                   searchable
-                  data={currentSportTeams?.map((team) => team.name)}
+                  data={
+                    isLoggeedIn
+                      ? userPreferences?.preferences.favoriteTeams
+                          .filter(
+                            (teamId) =>
+                              currentSportTeams
+                                ?.map((team) => team.id)
+                                .includes(teamId)
+                          )
+                          .map((teamId) =>
+                            teamsList.find((team) => team.id === teamId)
+                          )
+                          .map((team) => (team as Team).name)
+                      : currentSportTeams?.map((team) => team.name)
+                  }
                   value={selectedTeam}
                   onChange={(value) => {
                     setSelectedTeam(value);
