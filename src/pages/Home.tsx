@@ -23,7 +23,7 @@ import useSports from "../hooks/useSports";
 import useTeams from "../hooks/useTeams";
 import useUserPrefrences from "../hooks/useUserPrefrences";
 import { useAppStore } from "../state/store";
-import { Sport, Team } from "../types";
+import { Sport, Team, UserPreferences } from "../types";
 
 export function HomePage() {
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
@@ -45,13 +45,14 @@ export function HomePage() {
   );
 
   useEffect(() => {
-    if (sportsList && teamsList && userPreferences) {
+    if (sportsList && teamsList && (isLoggeedIn ? userPreferences : true)) {
       setSelectedSport(
         isLoggeedIn
           ? (
               sportsList.sports.find(
                 (sport) =>
-                  userPreferences.preferences.favoriteSports[0] === sport.id
+                  (userPreferences as UserPreferences).preferences
+                    .favoriteSports[0] === sport.id
               ) as Sport
             ).name
           : sportsList.sports[0].name
@@ -64,14 +65,15 @@ export function HomePage() {
               ? (
                   sportsList.sports.find(
                     (sport) =>
-                      userPreferences.preferences.favoriteSports[0] === sport.id
+                      (userPreferences as UserPreferences).preferences
+                        .favoriteSports[0] === sport.id
                   ) as Sport
                 ).name
               : sportsList.sports[0].name)
         )[0]?.name ?? null
       );
     }
-  }, [teamsList, sportsList, userPreferences]);
+  }, [teamsList, sportsList, userPreferences, isLoggeedIn]);
 
   return (
     <>
@@ -121,6 +123,7 @@ export function HomePage() {
               defaultValue={
                 isLoggeedIn ? "yournews" : sportsList?.sports[0].id.toString()
               }
+              key={sportsList?.sports[0].id} // UI Library has a bug where it won't re-render on state chage, this is to manually force it
             >
               <Tabs.List>
                 {isLoggeedIn && <Tabs.Tab value="yournews">Your News</Tabs.Tab>}
