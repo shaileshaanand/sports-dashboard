@@ -45,13 +45,13 @@ export function HomePage() {
   );
 
   useEffect(() => {
-    if (sportsList && teamsList) {
+    if (sportsList && teamsList && userPreferences) {
       setSelectedSport(
         isLoggeedIn
           ? (
               sportsList.sports.find(
                 (sport) =>
-                  userPreferences?.preferences.favoriteSports[0] === sport.id
+                  userPreferences.preferences.favoriteSports[0] === sport.id
               ) as Sport
             ).name
           : sportsList.sports[0].name
@@ -64,15 +64,14 @@ export function HomePage() {
               ? (
                   sportsList.sports.find(
                     (sport) =>
-                      userPreferences?.preferences.favoriteSports[0] ===
-                      sport.id
+                      userPreferences.preferences.favoriteSports[0] === sport.id
                   ) as Sport
                 ).name
               : sportsList.sports[0].name)
         )[0]?.name ?? null
       );
     }
-  }, [teamsList, sportsList]);
+  }, [teamsList, sportsList, userPreferences]);
 
   return (
     <>
