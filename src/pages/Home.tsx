@@ -1,5 +1,4 @@
 import {
-  Anchor,
   Box,
   Button,
   Center,
@@ -240,9 +239,6 @@ export function HomePage() {
           </Grid.Col>
         )}
       </Grid>
-      <Anchor component={Link} to="/signout">
-        Logout
-      </Anchor>
       <Outlet />
     </>
   );
