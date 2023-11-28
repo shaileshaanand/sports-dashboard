@@ -54,6 +54,25 @@ export function HomePage() {
     [articleList, selectedTeam]
   );
 
+  const filteredMatches = useMemo(
+    () =>
+      matchList?.matches
+        .filter(
+          (match) =>
+            match.isRunning &&
+            (isLoggeedIn
+              ? userPreferences?.preferences.favoriteTeams.some((teamId) =>
+                  match.teams.map((t) => t.id).includes(teamId)
+                )
+              : true)
+        )
+        .sort(
+          (a, b) => new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime()
+        )
+        .slice(0, 4), // only show last 5 matches
+    [matchList, isLoggeedIn, userPreferences, selectedTeam]
+  );
+
   useEffect(() => {
     if (sportsList && teamsList && (isLoggeedIn ? userPreferences : true)) {
       setSelectedSport(
@@ -92,26 +111,10 @@ export function HomePage() {
           Live Matches
         </Title>
         <Group gap={10}>
-          {matchList?.matches && (isLoggeedIn ? userPreferences : true) ? (
-            matchList.matches
-              .filter(
-                (match) =>
-                  match.isRunning &&
-                  (isLoggeedIn
-                    ? userPreferences?.preferences.favoriteTeams.some(
-                        (teamId) =>
-                          match.teams.map((t) => t.id).includes(teamId)
-                      )
-                    : true)
-              )
-              .sort(
-                (a, b) =>
-                  new Date(b.endsAt).getTime() - new Date(a.endsAt).getTime()
-              )
-              .slice(0, 4) // only show last 5 matches
-              .map((match) => (
-                <LiveMatchCard matchId={match.id} key={match.id} />
-              ))
+          {filteredMatches ? (
+            filteredMatches.map((match) => (
+              <LiveMatchCard matchId={match.id} key={match.id} />
+            ))
           ) : (
             <>
               <LiveMatchCardSkeleton />
