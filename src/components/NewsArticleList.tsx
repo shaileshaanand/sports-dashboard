@@ -14,13 +14,17 @@ const NewsArticleList = ({
 }) => (
   <Stack gap={20} p={20}>
     {articleList ? (
-      articleList.map((article) => (
-        <NewsArticle
-          article={article}
-          showShport={showSport}
-          key={article.id}
-        />
-      ))
+      articleList.length > 0 ? (
+        articleList.map((article) => (
+          <NewsArticle
+            article={article}
+            showShport={showSport}
+            key={article.id}
+          />
+        ))
+      ) : (
+        <p>No articles found</p>
+      )
     ) : (
       <>
         <NewsArticleSkeleton />
