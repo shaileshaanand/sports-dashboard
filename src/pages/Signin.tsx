@@ -34,8 +34,15 @@ const Signin = () => {
   const signInMutation = useMutation({
     mutationFn: (data: SignInPayload) => signinUser(data),
     onSuccess: (data) => {
-      setAuthToken(data?.auth_token);
-      navigate("/");
+      if (data.auth_token) {
+        setAuthToken(data?.auth_token);
+        navigate("/");
+      } else {
+        signInForm.setErrors({
+          email: "Invalid credentials",
+          password: "Invalid credentials",
+        });
+      }
     },
   });
 
