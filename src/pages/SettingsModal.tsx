@@ -137,7 +137,7 @@ const SettingsModal = () => {
       {sportsList && teamsList && !isUserPrefrencesLoading ? (
         <Stack>
           {sportsList.sports.map((sport) => (
-            <>
+            <Stack key={sport.id}>
               <Checkbox
                 label={sport.name}
                 key={sport.id}
@@ -191,7 +191,7 @@ const SettingsModal = () => {
                     ))}
                 </Group>
               )}
-            </>
+            </Stack>
           ))}
         </Stack>
       ) : (
