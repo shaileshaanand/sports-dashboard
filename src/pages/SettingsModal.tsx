@@ -201,6 +201,7 @@ const SettingsModal = () => {
         <Button
           mt="md"
           onClick={() => updatePreferencesMutation.mutate(preferences)}
+          loading={updatePreferencesMutation.isPending}
         >
           Save
         </Button>
