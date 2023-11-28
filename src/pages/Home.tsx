@@ -11,7 +11,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 import LiveMatchCard from "../components/LiveMatchCard";
@@ -42,6 +42,16 @@ export function HomePage() {
 
   const currentSportTeams = teamsList?.filter(
     (team) => team.plays === selectedSport
+  );
+
+  const filteredArticles = useMemo(
+    () =>
+      articleList?.filter((article) =>
+        selectedTeam && article.teams
+          ? article.teams.map((team) => team.name).includes(selectedTeam)
+          : false
+      ),
+    [articleList, selectedTeam]
   );
 
   useEffect(() => {
@@ -212,29 +222,35 @@ export function HomePage() {
 
               <Box py="sm">
                 <Stack gap="sm">
-                  {articleList
-                    .filter((article) =>
-                      selectedTeam && article.teams
-                        ? article.teams
-                            .map((team) => team.name)
-                            .includes(selectedTeam)
-                        : false
+                  {filteredArticles ? (
+                    filteredArticles.length > 0 ? (
+                      filteredArticles.map((article) => (
+                        <Paper key={article.id} withBorder p="xs">
+                          <Stack>
+                            <Text fw={700}>{article.title}</Text>
+                            <Text>{article.summary}</Text>
+                            <Button
+                              fullWidth
+                              component={Link}
+                              to={`/article/${article.id}`}
+                            >
+                              Read more
+                            </Button>
+                          </Stack>
+                        </Paper>
+                      ))
+                    ) : selectedSport && selectedTeam ? (
+                      <Center>
+                        <Text>No articles found</Text>
+                      </Center>
+                    ) : (
+                      <Center>
+                        <Text>Select a sport and a team</Text>
+                      </Center>
                     )
-                    .map((article) => (
-                      <Paper key={article.id} withBorder p="xs">
-                        <Stack>
-                          <Text fw={700}>{article.title}</Text>
-                          <Text>{article.summary}</Text>
-                          <Button
-                            fullWidth
-                            component={Link}
-                            to={`/article/${article.id}`}
-                          >
-                            Read more
-                          </Button>
-                        </Stack>
-                      </Paper>
-                    ))}
+                  ) : (
+                    <p>Loading..</p>
+                  )}
                 </Stack>
               </Box>
             </Box>
