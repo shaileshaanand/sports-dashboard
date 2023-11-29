@@ -19,6 +19,7 @@ const LiveMatchCard = ({
   const { data, refetch, isFetching } = useQuery({
     queryKey: ["liveMatch", matchId],
     queryFn: () => getMatch(matchId),
+    refetchInterval: 5000,
   });
 
   return (
