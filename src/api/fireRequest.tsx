@@ -76,6 +76,7 @@ const fireRequest = async ({
       if (res[0].status === 401) {
         showErrorNotification("Unauthorized access denied");
         localStorage.removeItem("AppStore");
+        window.location.reload();
       } else if (res[0].status === 405)
         showErrorNotification("Permission denied");
       else if (res[0].status >= 400) {
